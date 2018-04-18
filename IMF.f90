@@ -10,7 +10,7 @@ module constants
 	real*8,parameter :: x = 2.3d0
 	real*8,parameter :: C1 = 2.3419119626187666d0
 	real*8,parameter :: C2 = 0.65359841526902296d0
-	real*8 :: C3
+	real*8,parameter :: C3 = 7.d9 * 10.d0**(-0.5d0)
 end module constants
 
 !------------------------------------------------------------------
@@ -48,9 +48,7 @@ real*8 function tms(m)
 	use constants, only : C3		!Call C3
 	implicit none
 	real*8, intent(in) :: m
-	
-	C3 = 7.d9 * 10.d0**(-0.5d0)		!Exact values of C3
-	
+		
 	if (m < 10.d0) then
 		tms = 7.d9 * m**(-3)		!tms for m<10Msol
 	else 
@@ -117,7 +115,7 @@ subroutine stars_alive
 	implicit none
 	real*8,external :: IMFt,INTEGRAL2
 	real*8 :: total
-	real*8 :: O,B,A,F,G,K,Mstar,BD
+	real*8 :: O,B,A,F,G,K,M,BD
 	
 	
 	total = INTEGRAL2(IMFt,0.01d0,150.0d0,10**5)		!Number of stars alive
@@ -125,7 +123,7 @@ subroutine stars_alive
 	print '(A29,1pE10.4,A6)', "Total number of stars alive= ", total, " stars"
 	
 	BD = INTEGRAL2(IMFt,0.01d0,0.07d0,10**5)		!Number of brown dwarfs alive
-	Mstar = INTEGRAL2(IMFt,0.07d0,0.45d0,10**5)		!Number of M stars alive
+	M = INTEGRAL2(IMFt,0.07d0,0.45d0,10**5)		!Number of M stars alive
 	K = INTEGRAL2(IMFt,0.45d0,0.8d0,10**5)			!Number of K stars alive
 	G = INTEGRAL2(IMFt,0.8d0,1.04d0,10**5) 			!Number of G stars alive
 	F = INTEGRAL2(IMFt,1.04d0,1.4d0,10**5) 			!Number of F stars alive
@@ -139,7 +137,7 @@ subroutine stars_alive
 	print '(A19,1pE10.4,A6)', "Number of F stars= ", F," stars"
 	print '(A19,1pE10.4,A6)', "Number of G stars= ", G," stars"
 	print '(A19,1pE10.4,A6)', "Number of K stars= ", K," stars"
-	print '(A19,1pE10.4,A6)', "Number of M stars= ", Mstar," stars"
+	print '(A19,1pE10.4,A6)', "Number of M stars= ", M," stars"
 	print '(A24,1pE10.4,A13)', "Number of brown dwarfs= ", BD," brown dwarfs"
 
 end subroutine stars_alive
